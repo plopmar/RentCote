@@ -6,6 +6,7 @@ import com.saas.rentals.model.User;
 import com.saas.rentals.service.ContractService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,9 @@ import java.util.UUID;
 public class ContractController {
     private final ContractService contractService;
 
+    @Value("${app.upload.dir:uploads}")
+    private String uploadDirProperty;
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ContractResponse> createWithFile(
             @RequestPart("contract") @Valid ContractRequest request,
@@ -26,7 +30,7 @@ public class ContractController {
             @AuthenticationPrincipal User user) throws IOException {
         String pdfUrl = null;
         if (pdf != null && !pdf.isEmpty()) {
-            Path dir = Paths.get("uploads/contracts");
+            Path dir = Paths.get(uploadDirProperty, "contracts");
             Files.createDirectories(dir);
             String filename = UUID.randomUUID() + "_" + pdf.getOriginalFilename();
             Files.copy(pdf.getInputStream(), dir.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
@@ -48,7 +52,7 @@ public class ContractController {
             @AuthenticationPrincipal User user) throws IOException {
         String pdfUrl = null;
         if (pdf != null && !pdf.isEmpty()) {
-            Path dir = Paths.get("uploads/contracts");
+            Path dir = Paths.get(uploadDirProperty, "contracts");
             Files.createDirectories(dir);
             String filename = UUID.randomUUID() + "_" + pdf.getOriginalFilename();
             Files.copy(pdf.getInputStream(), dir.resolve(filename), StandardCopyOption.REPLACE_EXISTING);

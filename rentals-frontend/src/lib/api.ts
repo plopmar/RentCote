@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8080";
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 async function request<T>(
   endpoint: string,
@@ -122,6 +122,7 @@ export interface RentalRequest {
   address: string;
   rentalTypeId: string;
   monthlyPrice: number;
+  purchasePrice?: number;
   attributes: Record<string, unknown> | null;
 }
 
@@ -166,6 +167,16 @@ export const tenantsApi = {
 };
 
 /* ── Contracts ─────────────────────────── */
+export interface ContractRequest {
+  rentalId: string;
+  tenantId: string;
+  startDate: string;
+  endDate: string;
+  monthlyRent: number;
+  deposit: number;
+  status: string;
+}
+
 export interface ContractResponse {
   id: string;
   ownerId: string;
@@ -198,7 +209,7 @@ export const contractsApi = {
       formData.append("pdf", pdf);
       
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:8080/api/v1/contracts", {
+      const res = await fetch(`${API_BASE}/api/v1/contracts`, {
         method: "POST",
         headers: { "Authorization": `Bearer ${token}` },
         body: formData
@@ -218,7 +229,7 @@ export const contractsApi = {
       formData.append("pdf", pdf);
       
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:8080/api/v1/contracts/${id}`, {
+      const res = await fetch(`${API_BASE}/api/v1/contracts/${id}`, {
         method: "PUT",
         headers: { "Authorization": `Bearer ${token}` },
         body: formData
@@ -232,7 +243,7 @@ export const contractsApi = {
     const formData = new FormData();
     formData.append("contract", new Blob([JSON.stringify(data)], { type: "application/json" }));
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:8080/api/v1/contracts/${id}`, {
+    const res = await fetch(`${API_BASE}/api/v1/contracts/${id}`, {
       method: "PUT",
       headers: { "Authorization": `Bearer ${token}` },
       body: formData

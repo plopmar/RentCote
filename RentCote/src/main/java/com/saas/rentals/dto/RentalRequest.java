@@ -11,5 +11,6 @@ public record RentalRequest(
     @NotBlank(message = "Address is required") String address,
     @NotNull(message = "Rental type is required") UUID rentalTypeId,
     @NotNull(message = "Monthly price is required") @DecimalMin(value = "0.0", inclusive = false) BigDecimal monthlyPrice,
+    BigDecimal purchasePrice,
     Map<String, Object> attributes
 ) {}

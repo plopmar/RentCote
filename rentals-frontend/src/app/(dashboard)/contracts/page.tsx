@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { contractsApi, ContractResponse, ContractRequest, rentalsApi, RentalResponse, tenantsApi, TenantResponse, RentEvolutionResponse } from "@/lib/api";
+import { contractsApi, ContractResponse, ContractRequest, rentalsApi, RentalResponse, tenantsApi, TenantResponse, RentEvolutionResponse, API_BASE } from "@/lib/api";
 import toast from "react-hot-toast";
 import { FileText, History, XCircle, Trash2, Download, Edit2 } from "lucide-react";
 import { useModal } from "@/components/ModalProvider";
@@ -197,7 +197,7 @@ export default function ContractsPage() {
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
-                    {c.pdfUrl && <a href={`http://localhost:8080${c.pdfUrl}`} target="_blank" className="text-indigo-400 hover:text-indigo-300" title="Ver PDF"><FileText className="w-4 h-4" /></a>}
+                    {c.pdfUrl && <a href={`${API_BASE}${c.pdfUrl}`} target="_blank" className="text-indigo-400 hover:text-indigo-300" title="Ver PDF"><FileText className="w-4 h-4" /></a>}
                     <button onClick={() => handleEdit(c)} className="text-blue-400 hover:text-blue-300" title="Editar Contrato"><Edit2 className="w-4 h-4" /></button>
                     <button onClick={() => viewHistory(c)} className="text-amber-400 hover:text-amber-300" title="Historial de Precios"><History className="w-4 h-4" /></button>
                     {c.status === "ACTIVE" && <button onClick={() => handleTerminate(c.id)} className="text-red-400 hover:text-red-300" title="Dar de Baja"><XCircle className="w-4 h-4" /></button>}

@@ -1,5 +1,6 @@
 package com.saas.rentals.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -9,9 +10,13 @@ import java.nio.file.Paths;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+
+    @Value("${app.upload.dir:uploads}")
+    private String uploadDirProperty;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        Path uploadDir = Paths.get("uploads");
+        Path uploadDir = Paths.get(uploadDirProperty);
         String uploadPath = uploadDir.toFile().getAbsolutePath();
 
         registry.addResourceHandler("/uploads/**")

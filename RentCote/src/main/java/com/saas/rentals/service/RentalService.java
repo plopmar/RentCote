@@ -24,6 +24,7 @@ public class RentalService {
         Rental rental = Rental.builder()
                 .ownerId(ownerId).name(request.name()).address(request.address())
                 .rentalType(rt).monthlyPrice(request.monthlyPrice())
+                .purchasePrice(request.purchasePrice())
                 .status("VACÍO").attributes(request.attributes()).build();
         return mapToResponse(rentalRepository.save(rental));
     }
@@ -47,6 +48,6 @@ public class RentalService {
         return new RentalResponse(r.getId(), r.getOwnerId(), r.getName(), r.getAddress(),
                 r.getRentalType() != null ? r.getRentalType().getId() : null,
                 r.getRentalType() != null ? r.getRentalType().getName() : "Sin tipo",
-                r.getMonthlyPrice(), r.getStatus(), r.getAttributes());
+                r.getMonthlyPrice(), r.getPurchasePrice(), r.getStatus(), r.getAttributes());
     }
 }
